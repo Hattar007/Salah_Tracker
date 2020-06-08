@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import pickle
 
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
@@ -9,7 +10,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 
-df = pd.read_csv('train.csv')
+#df = pd.read_csv('NewTrain.csv')
+df = pd.read_csv('data7k.csv')
 # df2 = pd.read_csv('Data2.csv')
 # df3 = pd.read_csv('Data3.csv')
 # df4 = pd.read_csv('Data4.csv')
@@ -25,7 +27,6 @@ df.head()
 #print(df)
 print(len(df))
 narr= df.to_numpy()
-
 
 
 #print(df['Label'])
@@ -50,27 +51,16 @@ for i in range(1,len(labels)):
     while (len(narr2) < 200):
         narr2 = np.append(narr2, narr2,axis=0)
     np.random.shuffle(narr2)
-
-
     narrF=np.append(narrF,narr2[0:200],axis=0)
-
-
 
 
 print( len(narr2))
 
-
 #print(narrF)
-
-
-
 #np.append(narr2[:200])
 
 #print(narr2)
-
 #print (len(df[df['Label'] == labels[4]]))
-
-
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
@@ -112,19 +102,21 @@ X_test = scaler.transform(X_test)
 
 
 
-
-
-
 classifier = KNeighborsClassifier(n_neighbors=5)
-
 classifier.fit(X_train, y_train)
-
 y_pred = classifier.predict(X_test)
 
 
 
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ save the model to disk
+#filename = 'finalized_model.sav'
+#pickle.dump(classifier, open(filename, 'wb'))
+#pickle.dump(scaler, open('scaler.pkl', 'wb'))
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -143,7 +135,3 @@ y_predict = model.predict(X_test)
 from sklearn.metrics import accuracy_score
 
 print ("Decision Trees Accuracy: ", accuracy_score(y_test, y_predict))
-
-
-
-
